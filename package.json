@@ -1,0 +1,16 @@
+{
+  "name": "chrome-monitor",
+  "version": "0.0.1",
+  "description": "use chrome headless monitor web performance. obtains chrome devtools protocol",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yongqiangw@tujia.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "chrome-launcher": "^0.10.5",
+    "chrome-remote-interface": "^0.27.1"
+  }
+}
