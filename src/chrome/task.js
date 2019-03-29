@@ -2,7 +2,7 @@ const wrapper = require('./chrome-wrapper')
 // const fs = require('fs')
 const utils = require('../utils/utils')
 
-const results = {
+const result = {
   perforceTiming: {},
   requests: [{
     url: '',
@@ -27,14 +27,14 @@ const task = function (targetUrl, rootReport) {
 
       //页面发送请求时调用该方法
       Network.requestWillBeSent((params) => {
-        // results.requests.url = params.request.url
+        // result.requests.url = params.request.url
         // console.log("yes: " + params.request.url)/
         // console.log(result.requests.url)
       })
 
       //页面接收请求之后调用该方法
       Network.responseReceived((params) => {
-        results.requests.push({
+        result.requests.push({
           url: params.response.url,
           bodySize: params.response.encodedDataLength,
           time: params.response.timing
@@ -44,7 +44,7 @@ const task = function (targetUrl, rootReport) {
 
       //页面加载完成之后调用该方法
       Page.loadEventFired(async () => {
-        console.log(results.requests.length)
+        console.log(result.requests.length)
         //在控制台运行命令
         Runtime.evaluate({
           expression: 'window.performance.timing.toJSON()',
@@ -60,18 +60,19 @@ const task = function (targetUrl, rootReport) {
             throw exceptionDetails
           }
         })
-        let body = results.requests.map((request) => request.bodySize).reduce((pre, cur) => pre + cur, 0)
-        // console.log(`页面总下载量：${JSON.stringify(body)}`)
-        await Emulation.clearDeviceMetricsOverride()
+        let body = result.requests.map((request) => request.bodySize).reduce((pre, cur) => pre + cur, 0)
         console.log(`页面总下载量:${body}`)
         const {
           data
         } = await Page.captureScreenshot()
-        utils.writeBase64ToImage(casePath, 'captureScreenshot.png', data)
+        result.screenshot = data
+        // result.requests.url = targetUrl
+        // result.requests.bo
+        // utils.writeBase64ToImage(casePath, 'captureScreenshot.png', data)
         // await captureFullScreenshot(client, casePath)
         client.close()
-        // chromeInstance.kill()
-        resolve('done')
+        chromeInstance.kill()
+        resolve(result)
       })
 
       Page.enable().then(async () => {
