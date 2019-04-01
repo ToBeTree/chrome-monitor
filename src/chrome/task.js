@@ -4,17 +4,20 @@ const utils = require('../utils/utils')
 
 const result = {
   perforceTiming: {},
-  requests: [{
-    url: '',
-    bodySize: 0,
-    time: {}
-  }],
+  requests: [
+    /*{
+        url: '',
+        bodySize: 0,
+        time: {}
+      }*/
+  ],
+  downloadSize: 0,
   screenshot: []
 }
 
 const task = function (targetUrl, rootReport) {
-  let caseName = utils.parseLocation(targetUrl)
-  let casePath = utils.makeCaseDirectory(rootReport, caseName)
+  // let caseName = utils.parseLocation(targetUrl)
+  // let casePath = utils.makeCaseDirectory(rootReport, caseName)
   return new Promise((resolve, reject) => {
     wrapper.prepareAPI().then(([chromeInstance, client]) => {
       // extract domains
@@ -28,7 +31,6 @@ const task = function (targetUrl, rootReport) {
       //页面发送请求时调用该方法
       Network.requestWillBeSent((params) => {
         // result.requests.url = params.request.url
-        // console.log("yes: " + params.request.url)/
         // console.log(result.requests.url)
       })
 
@@ -40,13 +42,14 @@ const task = function (targetUrl, rootReport) {
           time: params.response.timing
         })
         // console.log(params.response)
+
       })
 
       //页面加载完成之后调用该方法
       Page.loadEventFired(async () => {
-        console.log(result.requests.length)
+        console.log("页面请求url数量:" + result.requests.length)
         //在控制台运行命令
-        Runtime.evaluate({
+        let perforceTiming = Runtime.evaluate({
           expression: 'window.performance.timing.toJSON()',
           returnByValue: true //不加这个参数，拿到的是一个对象的meta信息,还需要getProperties
         }).then((resultObj) => {
@@ -55,21 +58,25 @@ const task = function (targetUrl, rootReport) {
             exceptionDetails
           } = resultObj
           if (!exceptionDetails) {
-            showPerformanceInfo(performanceParser(result.value))
+            perforceTiming = performanceParser(result.value)
+            // showPerformanceInfo(performanceParser(result.value))
+            return perforceTiming
           } else {
             throw exceptionDetails
           }
         })
-        let body = result.requests.map((request) => request.bodySize).reduce((pre, cur) => pre + cur, 0)
-        console.log(`页面总下载量:${body}`)
+        let downloadSize = result.requests.map((request) => request.bodySize).reduce((pre, cur) => pre + cur, 0)
+        // console.log(`页面总下载量:${downloadSize}`)
         const {
           data
         } = await Page.captureScreenshot()
-        result.screenshot = data
         // result.requests.url = targetUrl
         // result.requests.bo
         // utils.writeBase64ToImage(casePath, 'captureScreenshot.png', data)
         // await captureFullScreenshot(client, casePath)
+        result.downloadSize = downloadSize
+        result.perforceTiming = perforceTiming
+        // result.screenshot = data
         client.close()
         chromeInstance.kill()
         resolve(result)

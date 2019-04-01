@@ -4,19 +4,19 @@ const utils = require('../utils/utils')
 const companys = ['途家', '小猪短租', '爱彼迎']
 const pageTypes = ['main', 'list', 'detail', 'discovery']
 
-const urls = ['https://www.airbnb.cn/', 'http://www.xiaozhu.com/', 'https://www.tujia.com/']
+// const urls = ['https://www.airbnb.cn/', 'http://www.xiaozhu.com/', 'https://www.tujia.com/']
 
-// const urls = ['https://cn.bing.com/']
+const urls = ['https://www.baidu.com/']
 const run = async function () {
-  let rootReport = utils.makeRootDirectory()
-  // let re = await task.task('https://www.baidu.com/', rootReport)
-  // console.log(typeof re)
-  // await task.task('https://cn.bing.com/', rootReport)
+  // let rootReport = utils.makeRootDirectory()
+  let rootReport = ''
+
   for (let i = 0; i < urls.length; i++) {
     console.log('-----------------------------')
     console.log('start one task.')
     console.log('-----------------------------')
     let re = await task.task(urls[i], rootReport)
+    // console.log(re)
     console.log('-----------------------------')
     console.log('end one task.')
     console.log('-----------------------------')
