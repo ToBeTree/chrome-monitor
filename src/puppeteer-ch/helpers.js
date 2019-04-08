@@ -37,9 +37,67 @@ function parseRequestData(req) {
 
 }
 
-function compressResult() {
+function compressResult(extraData, internalData) {
+    // let data = {
+    //     company: 'airbnb',
+    //     version: '',
+    //     urls: [{
+    //             type: 'main',
+    //             url: 'http://www.baidu.com'
+    //         },
+    //         {
+    //             type: 'detail',
+    //             url: 'https://cn.bing.com'
+    //         }
+    //     ]
+    // }
 
+    // let data2 = [{
+    //         requestCount: 26,
+    //         timing: {
+    //             redirect: 0,
+    //             dns: 45,
+    //             tcp: 322,
+    //             request: 100,
+    //             response: 4,
+    //             domReady: 827,
+    //             load: 832
+    //         },
+    //         requestSize: 6714
+    //     },
+    //     {
+    //         requestCount: 26,
+    //         timing: {
+    //             redirect: 0,
+    //             dns: 45,
+    //             tcp: 322,
+    //             request: 100,
+    //             response: 4,
+    //             domReady: 827,
+    //             load: 832
+    //         },
+    //         requestSize: 6714
+    //     }
+    // ]
+    let newExtraData = JSON.parse(JSON.stringify(extraData))
+    let newInternalData = JSON.parse(JSON.stringify(internalData))
+    // console.log(newInternalData)
+    // console.log(newExtraData)
+    let res = []
+    newExtraData.urls.map((value, i) => {
+        let result = newExtraData
+        result.type = value.type
+        result.url = value.url
+        result.data = newInternalData[i]
+        // console.log(data2[i])
+        delete result.urls
+        // return result
+        res.push(JSON.parse(JSON.stringify(result)))
+    })
+    // console.log(res)
+    return res
 }
+// compressResult()
 module.exports = {
     extraPerformanceTiming,
     showPerformanceInfo,

@@ -34,6 +34,26 @@ function testPage(browser, targetUrl) {
             // console.log(param.response.status, param.response.encodedDataLength)
         })
 
+        const actualData = {}
+        page._client.on('Network.dataReceived', (event) => {
+            // 通过requestID得到具体的请求
+            const request = page._networkManager._requestIdToRequest.get(
+                event.requestId
+            )
+            if (request && request.url().startsWith('data:')) {
+                return
+            }
+            const url = request.url()
+
+            const length = event.dataLength
+            // const length = event.encodedDataLength > 0 ? event.encodedDataLength : event.dataLength
+            if (url in actualData) {
+                actualData[url] += length
+            } else {
+                actualData[url] = length
+            }
+        })
+
         page.goto(targetUrl, {
             //修改默认30000ms超时时间
             waitUntil: 'load',
@@ -54,22 +74,31 @@ function testPage(browser, targetUrl) {
             // console.log(resources)
             const totalUncompressedBytes = Object.values(resources).reduce((a, n) => a + n, 0)
             const totalRequestCount = Object.values(resources).length
+            const totalUncompressedBytes2 = Object.values(actualData).reduce((a, n) => a + n, 0)
+            const totalRequestCount2 = Object.values(actualData).length
             console.log(`页面下载总量:${totalUncompressedBytes}`)
             console.log(`页面请求总量:${totalRequestCount}`)
+            console.log(`页面下载总量2:${totalUncompressedBytes2}`)
+            console.log(`页面请求总量2:${totalRequestCount2}`)
             urlResult.requestCount = totalRequestCount
             urlResult.timing = extraPerformanceTiming(performance.timing)
             urlResult.requestSize = totalUncompressedBytes
             // urlResult.pageSnapshot = snapShotData
-            performanceMetrics = await page._client.send('Performance.getMetrics')
-            console.log(performanceMetrics)
+            // performanceMetrics = await page._client.send('Performance.getMetrics')
+            // console.log(performanceMetrics)
 
             // showPerformanceInfo(extraPerformanceTiming(performance.timing))
             // return performance.timing
+            await page.close()
             return urlResult
         }).then((result) => {
             // 处理返回结果
             console.log('page load fired')
             resolve(result)
+        }).catch((result) => {
+            //页面捕捉到错误，返回一个空对象
+            console.log('访问页面报错')
+            reject({})
         })
 
     })

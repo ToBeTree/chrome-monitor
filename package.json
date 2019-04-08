@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chrome-launcher": "^0.10.5",
-    "chrome-remote-interface": "^0.27.1"
+    "chrome-remote-interface": "^0.27.1",
+    "puppeteer": "^1.14.0"
   }
 }

@@ -26,10 +26,13 @@ const data = [{
     }
 ]
 
-function parse(data) {
+function parseUrls(data) {
     let urls = data.map(company => company.urls.map(url => url.url))
     console.log(urls)
     return urls
 }
 
-parse(data)
+// parseUrls(data) 
+module.exports = {
+    data
+}
