@@ -6,6 +6,7 @@ const {
     testPage
 } = require('./task')
 
+const sectionResult = []
 
 const urls = ['https://www.baidu.com/', 'https://cn.bing.com/']
 // const urls = ['https://www.baidu.com']
@@ -13,6 +14,7 @@ const urls = ['https://www.baidu.com/', 'https://cn.bing.com/']
 const token = new Date().getTime()
 const data = [{
         company: 'airbnb',
+        version: '',
         urls: [{
                 type: 'main',
                 url: 'http://www.baidu.com'
@@ -25,6 +27,7 @@ const data = [{
     },
     {
         company: 'tujia',
+        version: '',
         urls: [{
                 type: 'main',
                 url: 'http://www.tujia.com'
@@ -39,7 +42,7 @@ const data = [{
 
 async function run(urls) {
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         // args: ['--start-maximized']
     })
     // console.log(browser)
@@ -56,6 +59,7 @@ function mission(browser, url) {
     return new Promise(async (resolve, reject) => {
         let urlResult = await testPage(browser, url)
         // console.log(urlResult)
+        // sectionResult.push
         console.log(`access page ${url} success`)
         resolve('task done')
     })
