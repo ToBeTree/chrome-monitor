@@ -4,7 +4,11 @@ const {
     extraPerformanceTiming
 } = require('./helpers')
 const urlResult = {}
-
+/**
+ * 通过浏览器实例对象打开targetUrl页面，获取当前页面性能数据
+ * @param {Object} browser 浏览器实例对象
+ * @param {String} targetUrl 目标URL
+ */
 function testPage(browser, targetUrl) {
 
     // const browser = await puppeteer.launch({

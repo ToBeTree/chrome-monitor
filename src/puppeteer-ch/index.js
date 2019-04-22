@@ -17,6 +17,11 @@ const sectionResult = []
 
 const token = new Date().getTime()
 
+/**
+ * 接收浏览器实例对象，按批次访问URL对象，返回本次URL数组所有性能数据
+ * @param {Object}  browser 浏览器实例对象
+ * @param {Array} urls 待访问URL数组
+ */
 async function runSection(browser, urls) {
     // const browser = await puppeteer.launch({
     //     headless: false,
@@ -49,6 +54,11 @@ async function runSection(browser, urls) {
     // await browser.close()
 }
 
+/**
+ * 通过URL调用testPage得到并返回页面性能数据
+ * @param {Object} browser 浏览器实例对象
+ * @param {String} url 待访问URL
+ */
 function mission(browser, url) {
     return new Promise(async (resolve, reject) => {
         const urlResult = await testPage(browser, url)
@@ -61,6 +71,10 @@ function mission(browser, url) {
 }
 
 
+/**
+ * 单次执行传递的数据
+ * @param {Object} data 待访问格式数据
+ */
 async function start(data) {
     const browser = await puppeteer.launch({
         headless: true,
