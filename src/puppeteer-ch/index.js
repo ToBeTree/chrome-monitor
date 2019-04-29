@@ -1,4 +1,7 @@
 const puppeteer = require('puppeteer')
+import {
+    logger
+} from "../utils/logger"
 const {
     parseRequestData,
     compressResult
@@ -41,12 +44,12 @@ async function runSection(browser, urls) {
     // return sectionResult
     return new Promise(async (resolve, reject) => {
         for (let i = 0; i < urls.length; i++) {
-            res = await mission(browser, urls[i])
+            let res = await mission(browser, urls[i])
             let newObj = JSON.parse(JSON.stringify(res))
             sectionResult.push(newObj)
             // sectionResult[i] = res
-            console.log('one mission end')
-            console.log('--------------------')
+            logger.debug('one mission end')
+            logger.debug('--------------------')
         }
         // console.log(sectionResult)
         resolve(sectionResult)
@@ -63,7 +66,7 @@ function mission(browser, url) {
     return new Promise(async (resolve, reject) => {
         const urlResult = await testPage(browser, url)
         // console.log(urlResult)
-        console.log(`access page ${url} success`)
+        logger.debug(`access page ${url} success`)
         // resolve('task done')
         //返回单个URL页面获取到的数据
         resolve(urlResult)
@@ -82,7 +85,7 @@ async function start(data) {
     })
     for (let i = 0; i < data.length - 1; i++) {
         let urls = data[i].urls.map(urls => urls.url)
-        console.log(urls)
+        logger.debug(urls)
         let res = await runSection(browser, urls)
         // console.log(res)
         let result = compressResult(data[i], res)

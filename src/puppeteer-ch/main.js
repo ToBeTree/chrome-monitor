@@ -1,4 +1,7 @@
 const puppeteer = require('puppeteer')
+import {
+    logger
+} from "../utils/logger";
 const {
     parseRequestData
 } = require('./helpers')
@@ -45,12 +48,12 @@ async function run(urls) {
         headless: false,
         // args: ['--start-maximized']
     })
-    // console.log(browser)
-    console.log(urls.length)
+    // logger.debug(browser)
+    logger.debug(urls.length)
     for (let i = 0; i < urls.length; i++) {
         await mission(browser, urls[i])
-        console.log('one task end')
-        console.log('--------------------')
+        logger.debug('one task end')
+        logger.debug('--------------------')
     }
     await browser.close()
 }
@@ -58,9 +61,9 @@ async function run(urls) {
 function mission(browser, url) {
     return new Promise(async (resolve, reject) => {
         let urlResult = await testPage(browser, url)
-        // console.log(urlResult)
+        // logger.debug(urlResult)
         // sectionResult.push
-        console.log(`access page ${url} success`)
+        logger.debug(`access page ${url} success`)
         resolve('task done')
     })
 }

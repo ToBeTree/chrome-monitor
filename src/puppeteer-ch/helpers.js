@@ -1,3 +1,6 @@
+import {
+    logger
+} from "../utils/logger";
 /**
  * 得到各种性能指标
  * @param {Object} perforceTiming W3C性能timing对象
@@ -24,13 +27,13 @@ function extraPerformanceTiming(perforceTiming) {
 
 const showPerformanceInfo = (performanceInfo) => {
     performanceInfo = performanceInfo || {}
-    console.log(`页面重定向耗时:${performanceInfo.redirect}`)
-    console.log(`DNS查找耗时:${performanceInfo.dns}`)
-    console.log(`TCP连接耗时:${performanceInfo.tcp}`)
-    console.log(`请求发送耗时:${performanceInfo.request}`)
-    console.log(`响应接收耗时:${performanceInfo.response}`)
-    console.log(`DOMReady耗时:${performanceInfo.domReady}`)
-    console.log(`页面加载耗时:${performanceInfo.load}`)
+    logger.debug(`页面重定向耗时:${performanceInfo.redirect}`)
+    logger.debug(`DNS查找耗时:${performanceInfo.dns}`)
+    logger.debug(`TCP连接耗时:${performanceInfo.tcp}`)
+    logger.debug(`请求发送耗时:${performanceInfo.request}`)
+    logger.debug(`响应接收耗时:${performanceInfo.response}`)
+    logger.debug(`DOMReady耗时:${performanceInfo.domReady}`)
+    logger.debug(`页面加载耗时:${performanceInfo.load}`)
 }
 
 function parseRequestData(req) {
@@ -81,20 +84,20 @@ function compressResult(extraData, internalData) {
     // ]
     let newExtraData = JSON.parse(JSON.stringify(extraData))
     let newInternalData = JSON.parse(JSON.stringify(internalData))
-    // console.log(newInternalData)
-    // console.log(newExtraData)
+    // logger.debug(newInternalData)
+    // logger.debug(newExtraData)
     let res = []
     newExtraData.urls.map((value, i) => {
         let result = newExtraData
         result.type = value.type
         result.url = value.url
         result.data = newInternalData[i]
-        // console.log(data2[i])
+        // logger.debug(data2[i])
         delete result.urls
         // return result
         res.push(JSON.parse(JSON.stringify(result)))
     })
-    // console.log(res)
+    // logger.debug(res)
     return res
 }
 // compressResult()

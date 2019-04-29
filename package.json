@@ -4,7 +4,9 @@
   "description": "use chrome headless monitor web performance. obtains chrome devtools protocol",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node src/puppeteer-ch/index.js --presets @babel/env",
+    "???": "nodemon src/puppeteer-ch/index.js --exec babel-node --presets @babel/env"
   },
   "author": "yongqiangw@tujia.com",
   "license": "ISC",
@@ -15,5 +17,12 @@
     "kafka-node": "^4.1.1",
     "log4js": "^4.1.0",
     "puppeteer": "^1.14.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.4",
+    "nodemon": "^1.18.11"
   }
 }

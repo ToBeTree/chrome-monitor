@@ -1,4 +1,7 @@
 const puppeteer = require('puppeteer')
+import {
+    logger
+} from "../utils/logger";
 const {
     showPerformanceInfo,
     extraPerformanceTiming
@@ -80,10 +83,10 @@ function testPage(browser, targetUrl) {
             const totalRequestCount = Object.values(resources).length
             const totalUncompressedBytes2 = Object.values(actualData).reduce((a, n) => a + n, 0)
             const totalRequestCount2 = Object.values(actualData).length
-            console.log(`页面下载总量:${totalUncompressedBytes}`)
-            console.log(`页面请求总量:${totalRequestCount}`)
-            console.log(`页面下载总量2:${totalUncompressedBytes2}`)
-            console.log(`页面请求总量2:${totalRequestCount2}`)
+            logger.debug(`页面下载总量:${totalUncompressedBytes}`)
+            logger.debug(`页面请求总量:${totalRequestCount}`)
+            logger.debug(`页面下载总量2:${totalUncompressedBytes2}`)
+            logger.debug(`页面请求总量2:${totalRequestCount2}`)
             urlResult.requestCount = totalRequestCount
             urlResult.timing = extraPerformanceTiming(performance.timing)
             urlResult.requestSize = totalUncompressedBytes
@@ -97,11 +100,11 @@ function testPage(browser, targetUrl) {
             return urlResult
         }).then((result) => {
             // 处理返回结果
-            console.log('page load fired')
+            logger.debug('page load fired')
             resolve(result)
         }).catch((result) => {
             //页面捕捉到错误，返回一个空对象
-            console.log('访问页面报错')
+            logger.debug('访问页面报错')
             reject({})
         })
 

@@ -1,5 +1,5 @@
 var log4js = require('log4js')
-// var path = require('path')
+var path = require('path')
 log4js.configure({
   appenders: {
     console: {
@@ -7,7 +7,7 @@ log4js.configure({
     },
     date_file: {
       type: 'dateFile',
-      filename: __dirname + '../../../logs/cheese.log',
+      filename: path.join(__dirname, '../../logs/cheese.log'),
       daysToKeep: 10,
       encoding: 'utf-8',
       pattern: "-yyyy-MM-dd.log",
@@ -21,7 +21,7 @@ log4js.configure({
     }
   }
 });
-// var logger = log4js.getLogger('11')
+var logger = log4js.getLogger()
 
 logger.level = 'debug'
 
@@ -30,3 +30,5 @@ logger.level = 'debug'
 module.exports = {
   logger
 }
+
+// export default logger
