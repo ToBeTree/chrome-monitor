@@ -1,0 +1,15 @@
+tujia:
+  -
+    url: https://www.tujia.com
+    type: main
+  -
+    url: https://www.tujia.com/detail/378195.htm?ssr=off
+    type: detail
+airbnb:
+  -
+    url: http://www.baidu.com
+    type: main
+  -
+    url: https://cn.bing.com
+    type: detail
+xiaozhu:

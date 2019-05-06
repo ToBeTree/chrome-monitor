@@ -4,7 +4,7 @@
   "description": "use chrome headless monitor web performance. obtains chrome devtools protocol",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "babel-node test.js",
     "start": "babel-node src/puppeteer-ch/index.js --presets @babel/env",
     "???": "nodemon src/puppeteer-ch/index.js --exec babel-node --presets @babel/env"
   },
@@ -14,9 +14,11 @@
     "axios": "^0.18.0",
     "chrome-launcher": "^0.10.5",
     "chrome-remote-interface": "^0.27.1",
+    "js-yaml": "^3.13.1",
     "kafka-node": "^4.1.1",
     "log4js": "^4.1.0",
-    "puppeteer": "^1.14.0"
+    "optimist": "^0.6.1",
+    "puppeteer": "1.14.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",

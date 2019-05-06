@@ -1,10 +1,10 @@
 const kafka = require('kafka-node')
-const Producter = kafka.Producer
+const Producer = kafka.Producer
 const client = new kafka.KafkaClient({
   kafkaHost: 'url:port'
 })
 
-var producter = new Producter(client)
+var producer = new Producer(client)
 
 function postData() {
 
@@ -14,14 +14,14 @@ function postData() {
    * @param {Object} message 待发送的消息
    */
   function sendMsg(callback, message) {
-    producter.send([{
+    producer.send([{
       topic: 'Web-Monitor',
       messages: ['test message'],
       attributes: 0
     }], callback)
   }
 
-  producter.on('ready', function () {
+  producer.on('ready', function () {
     sendMsg(function (err, data) {
       if (err) {
         console.log('err: ', err)
@@ -29,7 +29,7 @@ function postData() {
       console.log('data: ', data)
 
       // 关闭连接
-      producter.close()
+      producer.close()
       client.close()
     })
   })
