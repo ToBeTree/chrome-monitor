@@ -12,6 +12,13 @@ const {
 const {
     data
 } = require('./test')
+import {
+    postDataToKafka
+} from '../utils/kafka'
+import {
+    readArgv,
+    readConfig
+} from '../utils/commandline'
 
 const sectionResult = []
 
@@ -79,6 +86,8 @@ function mission(browser, url) {
  * @param {Object} data 待访问格式数据
  */
 async function start(data) {
+    let property = readArgv()
+    readConfig(property)
     const browser = await puppeteer.launch({
         headless: true,
         // args: ['--start-maximized']
@@ -89,7 +98,9 @@ async function start(data) {
         let res = await runSection(browser, urls)
         // console.log(res)
         let result = compressResult(data[i], res)
+        console.log(JSON.stringify(result))
         //push sectionResult Data 
+        // postDataToKafka(JSON.stringify(result))
     }
 
     setTimeout(() => {}, 500)

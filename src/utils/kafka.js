@@ -1,13 +1,13 @@
 const kafka = require('kafka-node')
-const Producer = kafka.Producer
-const client = new kafka.KafkaClient({
-  kafkaHost: 'url:port'
-})
 
-var producer = new Producer(client)
 
-function postData() {
+const postDataToKafka = function (message) {
 
+  const Producer = kafka.Producer
+  const client = new kafka.KafkaClient({
+    kafkaHost: 'ip:port'
+  })
+  var producer = new Producer(client)
   /**
    * 传递待发送的消息，发送完成后执行回调函数
    * @param {Object} callback kafka发送消息后的回调函数
@@ -16,7 +16,7 @@ function postData() {
   function sendMsg(callback, message) {
     producer.send([{
       topic: 'Web-Monitor',
-      messages: ['test message'],
+      messages: message,
       attributes: 0
     }], callback)
   }
@@ -31,15 +31,17 @@ function postData() {
       // 关闭连接
       producer.close()
       client.close()
-    })
+    }, message)
   })
 
-  producter.on('error', function (err) {
+  producer.on('error', function (err) {
     console.log(err)
     // 发生错误后关闭生产者对象
-    producter.close()
+    producer.close()
   })
 
 }
 
-postData()
+module.exports = {
+  postDataToKafka
+}

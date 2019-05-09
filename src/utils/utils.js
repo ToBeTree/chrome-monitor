@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const yaml = require('js-yaml')
 
 /**
  * 将base64数据转换成图片存储
@@ -78,39 +77,9 @@ const makeCaseDirectory = function (reportPath, caseName) {
   }
 }
 
-/**
- * 返回命令行中手动传入的参数
- * @param {Object} argv 命令行参数对象，包含整个执行命令的数据
- */
-const readArgv = function (argv) {
-  let property = {}
-  property = argv
-
-  // 只保留命令行传进来的参数
-  delete property._
-  delete property.$0
-
-  return property
-}
-
-/**
- * 获取到将要被执行性能监控的URL数据
- * @param {Object} property 命令行传入的参数集合
- * @param {String} path 资源配置文件地址，有默认值
- */
-const readConfig = function (property, path = '../config/datasource.yml') {
-  let config = yaml.safeLoad(fs.readFileSync(path))
-  if (property.company != null) {
-    config = config[property.company]
-  }
-  return config
-}
-
 module.exports = {
   writeBase64ToImage,
   parseLocation,
   makeRootDirectory,
   makeCaseDirectory,
-  readArgv,
-  readConfig
 }

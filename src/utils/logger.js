@@ -26,6 +26,7 @@ log4js.configure({
   }
 });
 var logger = log4js.getLogger()
+logger.level = 'info'
 
 // Logger的分类需要和configure里面的categories里面保持一致，如不一致默认走default配置
 var logger = log4js.getLogger('web-monitor')
